@@ -1,8 +1,8 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Web Experience Loader</title>
+  <meta charset="UTF-8">
+  <title>Animated Navigation</title>
   <style>
     * {
       margin: 0;
@@ -11,108 +11,193 @@
     }
 
     body {
-      background-color: #0d0d0d;
-      color: #ffffff;
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: #d42c2c;
+      overflow-x: hidden;
     }
 
-    .logo {
-      font-size: 26px;
+    .menu-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: #fff;
+      border-radius: 20px;
       font-weight: bold;
-      margin-bottom: 20px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 9;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.6s ease;
+      overflow-y: auto;
+    }
+
+    .overlay.active {
+      right: 0;
+    }
+
+    .overlay-header {
+      padding: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .overlay-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #000;
+      color: white;
+      padding: 5px 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .nav-card {
+      padding: 50px 20px;
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-card:nth-child(2) {
+      background: #ffb484;
+    }
+
+    .nav-card:nth-child(3) {
+      background: #ffe17d;
+    }
+
+    .nav-card:nth-child(4) {
+      background: #fff;
+    }
+
+    .nav-card:hover {
+      transform: scale(1.03);
       letter-spacing: 2px;
     }
 
-    .number {
-      font-style: italic;
-      font-size: 16px;
-      opacity: 0.7;
-      margin-bottom: 10px;
+    .arrow {
+      float: right;
+      font-size: 1.5rem;
+      margin-top: 10px;
     }
 
-    .main-text {
-      font-size: 28px;
-      font-weight: bold;
-      line-height: 1.4;
-      animation: fadeIn 2s ease-in-out;
+    .text-content {
+      padding: 30px;
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.6;
     }
 
-    .highlight {
-      font-style: italic;
-      font-family: 'Georgia', serif;
-    }
-
-    .small-text {
-      margin-top: 20px;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-
-    .countdown {
-      margin-top: 15px;
-      font-size: 16px;
-      font-weight: 500;
-    }
-
-    .progress-bar-container {
-      margin-top: 30px;
-      width: 80%;
-      height: 8px;
-      background-color: #333;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
+    /* Subpage container */
+    .subpage {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
       height: 100%;
-      width: 0%;
-      background-color: #00ffcc;
-      transition: width 0.5s;
+      background: #f7f7f7;
+      transition: left 0.5s ease;
+      padding: 40px;
+      overflow-y: auto;
     }
 
-    .tips {
-      margin-top: 40px;
-      font-size: 13px;
-      opacity: 0.6;
+    .subpage.active {
+      left: 0;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .back-button {
+      background: #000;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      border: none;
+    }
+
+    .subpage h2 {
+      margin-top: 10px;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .subpage p {
+      font-size: 1rem;
+      color: #444;
     }
   </style>
 </head>
 <body>
 
-  <div class="logo">MySite™</div>
-  <div class="number">54 - 100</div>
+  <div class="menu-button" onclick="toggleOverlay()">MENU</div>
 
-  <div class="main-text">
-    YOUR <br>
-    WEB EXPERIENCE <br>
-    IS LOADING RIGHT <span class="highlight">NOW</span>
+  <!-- Main Navigation Overlay -->
+  <div class="overlay" id="overlay">
+    <button class="overlay-close" onclick="toggleOverlay()">CLOSE ✕</button>
+    <div class="overlay-header">
+      We make digital products for complex challenges: from mobile apps to enterprise systems.
+    </div>
+
+    <div class="nav-card" onclick="openSubpage('about')">ABOUT US <span class="arrow">➜</span></div>
+    <div class="nav-card" onclick="openSubpage('works')">WORKS <span class="arrow">➜</span></div>
+    <div class="nav-card" onclick="openSubpage('services')">SERVICES <span class="arrow">➜</span></div>
+    <div class="text-content">Tip: Click on any section to explore more.</div>
+
+    <!-- Subpages -->
+    <div class="subpage" id="about">
+      <button class="back-button" onclick="closeSubpage('about')">← Back</button>
+      <h2>About Us</h2>
+      <p>We are a digital agency specializing in delivering clean, scalable solutions for startups and enterprises. Our mission is to simplify complex digital challenges with creative thinking and agile execution.</p>
+    </div>
+
+    <div class="subpage" id="works">
+      <button class="back-button" onclick="closeSubpage('works')">← Back</button>
+      <h2>Our Work</h2>
+      <p>From mobile applications to large-scale web platforms, we’ve built a wide range of digital products for clients in health, finance, education, and logistics. Innovation and design drive everything we do.</p>
+    </div>
+
+    <div class="subpage" id="services">
+      <button class="back-button" onclick="closeSubpage('services')">← Back</button>
+      <h2>Our Services</h2>
+      <p>We offer UI/UX design, mobile app development, full-stack web development, API integration, and enterprise system architecture. Each solution is tailored to your business goals and user needs.</p>
+    </div>
   </div>
-
-  <div class="countdown">Loading in <span id="count">10</span> seconds</div>
-
-  <div class="progress-bar-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <div class="small-text">Please wait a few seconds</div>
-
-  <div class="tips">Tip: For the best experience, use Chrome or Firefox.</div>
 
   <script>
-    let count = 10;
-    const counter = document.getElementById("count");
-    const progressBar = document.getElementById("progressBar");
+    function toggleOverlay() {
+      document.getElementById("overlay").classList.toggle("active");
 
-    const count
+      // Reset all subpages
+      ['about', 'works', 'services'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+      });
+    }
+
+    function openSubpage(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeSubpage(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+  </script>
+
+</body>
+</html>
