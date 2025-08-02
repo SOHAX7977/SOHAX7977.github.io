@@ -1,28 +1,39 @@
-<h1>Hello from Github</h1>
-
-```html
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Loading Page</title>
+  <meta charset="UTF-8" />
+  <title>Web Experience Loader</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       background-color: #0d0d0d;
-      color: white;
+      color: #ffffff;
       font-family: 'Arial', sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      flex-direction: column;
+      overflow: hidden;
       text-align: center;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
     }
 
     .number {
       font-style: italic;
-      font-size: 18px;
+      font-size: 16px;
+      opacity: 0.7;
       margin-bottom: 10px;
     }
 
@@ -30,6 +41,7 @@
       font-size: 28px;
       font-weight: bold;
       line-height: 1.4;
+      animation: fadeIn 2s ease-in-out;
     }
 
     .highlight {
@@ -42,17 +54,65 @@
       font-size: 12px;
       opacity: 0.7;
     }
+
+    .countdown {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .progress-bar-container {
+      margin-top: 30px;
+      width: 80%;
+      height: 8px;
+      background-color: #333;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #00ffcc;
+      transition: width 0.5s;
+    }
+
+    .tips {
+      margin-top: 40px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
+
+  <div class="logo">MySite™</div>
   <div class="number">54 - 100</div>
+
   <div class="main-text">
     YOUR <br>
     WEB EXPERIENCE <br>
     IS LOADING RIGHT <span class="highlight">NOW</span>
   </div>
-  <div class="small-text">Please wait a few seconds</div>
-</body>
-</html>
-```
 
+  <div class="countdown">Loading in <span id="count">10</span> seconds</div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="small-text">Please wait a few seconds</div>
+
+  <div class="tips">Tip: For the best experience, use Chrome or Firefox.</div>
+
+  <script>
+    let count = 10;
+    const counter = document.getElementById("count");
+    const progressBar = document.getElementById("progressBar");
+
+    const count
